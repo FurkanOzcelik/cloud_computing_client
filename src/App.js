@@ -8,6 +8,13 @@ export default function App() {
   const [hovered, setHovered] = useState(0);
   const [jaroSimilarity, setJaroSimilarity] = useState(0);
   const [jaroSimilar, setJaroSimilar] = useState("");
+  const [no, setNo] = useState(0);
+  const [category, setCategory] = useState("healt personal care");
+  const [categories, setCategories] = useState([
+    'health personal care', 'low similarity', 'toys games', 'high similarity', 'pet supplies', 'beauty', 'baby products', 'grocery gourmet food'
+  ]);
+  const [name, setName] = useState("");
+  
   const [state, setState] = useState({
     name: "bob",
     color: "blue"
@@ -17,10 +24,13 @@ export default function App() {
     hovered ? setHovered(row.id) : setHovered(-1);
   };
 
+  // "name": "My daughter really wanted this item so we purchased it and 15min after she started",
+  // "cat": "toys games"
+
   function a() {
     console.log("sa")
     for(let i = 0; i < 1; i++){
-      const x = fetch("https://mh957j28nl.execute-api.us-east-1.amazonaws.com/default/JaroWinklerSimilarity?name=CRAT", {
+      const x = fetch(`https://mh957j28nl.execute-api.us-east-1.amazonaws.com/default/JaroWinklerSimilarity?name=${name}&cat=${category}`, {
                   "method":"POST"
                 })
                 .then(res => {
@@ -32,6 +42,7 @@ export default function App() {
                     console.log(result)
                     setJaroSimilarity(result.point)
                     setJaroSimilar(result.string)
+                    setNo(result.no)
                   },
                   // Note: it's important to handle errors here
                   // instead of a catch() block so that we don't swallow
@@ -46,6 +57,7 @@ export default function App() {
 
   return (
     <div>
+      <p></p>
       {lists.map((list) => (
         <button
           key={list.id}
@@ -58,6 +70,23 @@ export default function App() {
         </button>
       ))}
       {jaroSimilarity !== 0 && <p>Most Similar Word: {jaroSimilar}      Similarity Rate: {jaroSimilarity}</p>}
+      <select id="dropdown" value={category} 
+        onChange={(e) => {setCategory(e.target.value)}}>
+        {categories.map(category => (
+          <option value={category} key={category}>{category}</option>
+        ))}
+      </select>
+      <p>{category}</p>
+      <form>
+        {/* <label>Enter your name: */}
+          <textarea
+            type="text" 
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            style={{height: 200}}
+          />
+        {/* </label> */}
+      </form>
     </div>
   );
 }
