@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 const lists = [
   { id: 1, title: "Click 1" },
-  { id: 2, title: "Click 2" },
-  { id: 3, title: "Click 3" }
+  { id: 2, title: "Click 2" }
 ];
 export default function App() {
   const [hovered, setHovered] = useState(0);
   const [jaroSimilarity, setJaroSimilarity] = useState(0);
   const [jaroSimilar, setJaroSimilar] = useState("");
   const [no, setNo] = useState(0);
-  const [category, setCategory] = useState("healt personal care");
+  const [category, setCategory] = useState("health personal care");
   const [categories, setCategories] = useState([
     'health personal care', 'low similarity', 'toys games', 'high similarity', 'pet supplies', 'beauty', 'baby products', 'grocery gourmet food'
   ]);
@@ -28,30 +27,27 @@ export default function App() {
   // "cat": "toys games"
 
   function a() {
-    console.log("sa")
-    for(let i = 0; i < 1; i++){
-      const x = fetch(`https://mh957j28nl.execute-api.us-east-1.amazonaws.com/default/JaroWinklerSimilarity?name=${name}&cat=${category}`, {
-                  "method":"POST"
-                })
-                .then(res => {
-                  console.log(res)
-                  return res.json()
-                })
-                .then(
-                  (result) => {
-                    console.log(result)
-                    setJaroSimilarity(result.point)
-                    setJaroSimilar(result.string)
-                    setNo(result.no)
-                  },
-                  // Note: it's important to handle errors here
-                  // instead of a catch() block so that we don't swallow
-                  // exceptions from actual bugs in components.
-                  (error) => {
-                    console.log("error", error)
-                  }
-                )
-    }
+    const x = fetch(`https://mh957j28nl.execute-api.us-east-1.amazonaws.com/default/JaroWinklerSimilarity?name=${name}&cat=${category}`, {
+                "method":"POST"
+              })
+              .then(res => {
+                console.log(res)
+                return res.json()
+              })
+              .then(
+                (result) => {
+                  console.log(result)
+                  setJaroSimilarity(result.point)
+                  setJaroSimilar(result.string)
+                  setNo(result.no)
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                (error) => {
+                  console.log("error", error)
+                }
+              )
     console.log('ended')
   }
 
@@ -69,7 +65,8 @@ export default function App() {
           {list.title}
         </button>
       ))}
-      {jaroSimilarity !== 0 && <p>Most Similar Word: {jaroSimilar}      Similarity Rate: {jaroSimilarity}</p>}
+      {jaroSimilarity !== 0 && <p>Most Similar Word: {jaroSimilar}</p>}
+      {jaroSimilarity !== 0 && <p>Similarity Rate: {jaroSimilarity}</p>}
       <select id="dropdown" value={category} 
         onChange={(e) => {setCategory(e.target.value)}}>
         {categories.map(category => (
