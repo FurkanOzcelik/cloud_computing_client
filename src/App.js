@@ -48,23 +48,53 @@ export default function App() {
                   console.log("error", error)
                 }
               )
-    console.log('ended')
+  }
+  function b() {
+
+    const x = fetch(`http://3.230.135.247:8080?name=${name}&cat=${category}`, {
+                "method":"GET"
+              })
+              .then(res => {
+                console.log(res)
+                return res.json()
+              })
+              .then(
+                (result) => {
+                  console.log(result)
+                  setJaroSimilarity(result.point)
+                  setJaroSimilar(result.string)
+                  setNo(result.no)
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                (error) => {
+                  console.log("error", error)
+                }
+              )
   }
 
   return (
     <div>
       <p></p>
-      {lists.map((list) => (
+      {/* {lists.map((list) => ( */}
         <button
-          key={list.id}
           onClick={() => a()}
-          onMouseEnter={() => handleColor(list, true)}
-          onMouseLeave={() => handleColor(list, false)}
-          style={{ backgroundColor: list.id === hovered ? "red" : "" }}
+          onMouseEnter={() => handleColor(lists[0], true)}
+          onMouseLeave={() => handleColor(lists[0], false)}
+          style={{ backgroundColor: lists[0].id === hovered ? "red" : "" }}
         >
-          {list.title}
+          {lists[0].title}
         </button>
-      ))}
+        <button
+          onClick={() => b()}
+          onMouseEnter={() => handleColor(lists[1], true)}
+          onMouseLeave={() => handleColor(lists[1], false)}
+          style={{ backgroundColor: lists[1].id === hovered ? "red" : "" }}
+        >
+          {lists[1].title}
+        </button>
+      {/* ))} */}
       {jaroSimilarity !== 0 && <p>Most Similar Word: {jaroSimilar}</p>}
       {jaroSimilarity !== 0 && <p>Similarity Rate: {jaroSimilarity}</p>}
       <select id="dropdown" value={category} 
