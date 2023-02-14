@@ -27,7 +27,7 @@ export default function App() {
   // "cat": "toys games"
 
   function a() {
-    const x = fetch(`https://mh957j28nl.execute-api.us-east-1.amazonaws.com/default/JaroWinklerSimilarity?name=${name}&cat=${category}`, {
+    const x = fetch(`add amazon request url here`, {
                 "method":"POST"
               })
               .then(res => {
@@ -51,7 +51,7 @@ export default function App() {
   }
   function b() {
 
-    const x = fetch(`http://3.230.135.247:8080?name=${name}&cat=${category}`, {
+    const x = fetch(`add server request url here`, {
                 "method":"GET"
               })
               .then(res => {
